@@ -1,5 +1,5 @@
 {
-  "name": "shadcn-admin",
+  "name": "dashboard-upc",
   "private": true,
   "version": "1.1.0",
   "type": "module",
@@ -37,7 +37,7 @@
     "@tanstack/react-query": "^5.62.3",
     "@tanstack/react-router": "^1.86.1",
     "@tanstack/react-table": "^8.20.5",
-    "axios": "^1.8.2",
+    "axios": "1.8.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "1.0.4",

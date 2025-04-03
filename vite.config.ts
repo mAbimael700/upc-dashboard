@@ -15,4 +15,12 @@ export default defineConfig({
       '@tabler/icons-react': '@tabler/icons-react/dist/esm/icons/index.mjs',
     },
   },
+  server: {
+    proxy: {
+      '/upc/v1': {  // Todas las rutas que comiencen con /api
+        target: 'https://upc-api-1-xmr7.onrender.com',  // URL de tu backend
+        changeOrigin: true,
+      }
+    }
+  }
 })

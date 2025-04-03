@@ -64,6 +64,12 @@ const AuthenticatedSettingsAppearanceLazyImport = createFileRoute(
 const AuthenticatedSettingsAccountLazyImport = createFileRoute(
   '/_authenticated/settings/account',
 )()
+const AuthenticatedAvisosEditLazyImport = createFileRoute(
+  '/_authenticated/avisos/edit',
+)()
+const AuthenticatedAvisosCreateLazyImport = createFileRoute(
+  '/_authenticated/avisos/create',
+)()
 
 // Create/Update Routes
 
@@ -272,6 +278,24 @@ const AuthenticatedSettingsAccountLazyRoute =
     ),
   )
 
+const AuthenticatedAvisosEditLazyRoute =
+  AuthenticatedAvisosEditLazyImport.update({
+    id: '/avisos/edit',
+    path: '/avisos/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/avisos/edit.lazy').then((d) => d.Route),
+  )
+
+const AuthenticatedAvisosCreateLazyRoute =
+  AuthenticatedAvisosCreateLazyImport.update({
+    id: '/avisos/create',
+    path: '/avisos/create',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/avisos/create.lazy').then((d) => d.Route),
+  )
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -372,6 +396,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/avisos/create': {
+      id: '/_authenticated/avisos/create'
+      path: '/avisos/create'
+      fullPath: '/avisos/create'
+      preLoaderRoute: typeof AuthenticatedAvisosCreateLazyImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
+    '/_authenticated/avisos/edit': {
+      id: '/_authenticated/avisos/edit'
+      path: '/avisos/edit'
+      fullPath: '/avisos/edit'
+      preLoaderRoute: typeof AuthenticatedAvisosEditLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/settings/account': {
@@ -478,6 +516,8 @@ const AuthenticatedSettingsRouteLazyRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteLazyRoute: typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedAvisosCreateLazyRoute: typeof AuthenticatedAvisosCreateLazyRoute
+  AuthenticatedAvisosEditLazyRoute: typeof AuthenticatedAvisosEditLazyRoute
   AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
   AuthenticatedChatsIndexLazyRoute: typeof AuthenticatedChatsIndexLazyRoute
   AuthenticatedHelpCenterIndexLazyRoute: typeof AuthenticatedHelpCenterIndexLazyRoute
@@ -489,6 +529,8 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteLazyRoute:
     AuthenticatedSettingsRouteLazyRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedAvisosCreateLazyRoute: AuthenticatedAvisosCreateLazyRoute,
+  AuthenticatedAvisosEditLazyRoute: AuthenticatedAvisosEditLazyRoute,
   AuthenticatedAppsIndexLazyRoute: AuthenticatedAppsIndexLazyRoute,
   AuthenticatedChatsIndexLazyRoute: AuthenticatedChatsIndexLazyRoute,
   AuthenticatedHelpCenterIndexLazyRoute: AuthenticatedHelpCenterIndexLazyRoute,
@@ -513,6 +555,8 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
+  '/avisos/create': typeof AuthenticatedAvisosCreateLazyRoute
+  '/avisos/edit': typeof AuthenticatedAvisosEditLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
@@ -537,6 +581,8 @@ export interface FileRoutesByTo {
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
+  '/avisos/create': typeof AuthenticatedAvisosCreateLazyRoute
+  '/avisos/edit': typeof AuthenticatedAvisosEditLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
@@ -565,6 +611,8 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500LazyRoute
   '/(errors)/503': typeof errors503LazyRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/avisos/create': typeof AuthenticatedAvisosCreateLazyRoute
+  '/_authenticated/avisos/edit': typeof AuthenticatedAvisosEditLazyRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
@@ -593,6 +641,8 @@ export interface FileRouteTypes {
     | '/404'
     | '/503'
     | '/'
+    | '/avisos/create'
+    | '/avisos/edit'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
@@ -616,6 +666,8 @@ export interface FileRouteTypes {
     | '/404'
     | '/503'
     | '/'
+    | '/avisos/create'
+    | '/avisos/edit'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
@@ -642,6 +694,8 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
+    | '/_authenticated/avisos/create'
+    | '/_authenticated/avisos/edit'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
@@ -714,6 +768,8 @@ export const routeTree = rootRoute
       "children": [
         "/_authenticated/settings",
         "/_authenticated/",
+        "/_authenticated/avisos/create",
+        "/_authenticated/avisos/edit",
         "/_authenticated/apps/",
         "/_authenticated/chats/",
         "/_authenticated/help-center/",
@@ -767,6 +823,14 @@ export const routeTree = rootRoute
     },
     "/_authenticated/": {
       "filePath": "_authenticated/index.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/avisos/create": {
+      "filePath": "_authenticated/avisos/create.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/avisos/edit": {
+      "filePath": "_authenticated/avisos/edit.lazy.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/settings/account": {
