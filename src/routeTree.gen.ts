@@ -18,6 +18,7 @@ import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authOtpImport } from './routes/(auth)/otp'
 import { Route as auth500Import } from './routes/(auth)/500'
+import { Route as AuthenticatedAvisosEditIdImport } from './routes/_authenticated/avisos/edit/$id'
 
 // Create Virtual Routes
 
@@ -63,9 +64,6 @@ const AuthenticatedSettingsAppearanceLazyImport = createFileRoute(
 )()
 const AuthenticatedSettingsAccountLazyImport = createFileRoute(
   '/_authenticated/settings/account',
-)()
-const AuthenticatedAvisosEditLazyImport = createFileRoute(
-  '/_authenticated/avisos/edit',
 )()
 const AuthenticatedAvisosCreateLazyImport = createFileRoute(
   '/_authenticated/avisos/create',
@@ -278,15 +276,6 @@ const AuthenticatedSettingsAccountLazyRoute =
     ),
   )
 
-const AuthenticatedAvisosEditLazyRoute =
-  AuthenticatedAvisosEditLazyImport.update({
-    id: '/avisos/edit',
-    path: '/avisos/edit',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/avisos/edit.lazy').then((d) => d.Route),
-  )
-
 const AuthenticatedAvisosCreateLazyRoute =
   AuthenticatedAvisosCreateLazyImport.update({
     id: '/avisos/create',
@@ -295,6 +284,12 @@ const AuthenticatedAvisosCreateLazyRoute =
   } as any).lazy(() =>
     import('./routes/_authenticated/avisos/create.lazy').then((d) => d.Route),
   )
+
+const AuthenticatedAvisosEditIdRoute = AuthenticatedAvisosEditIdImport.update({
+  id: '/avisos/edit/$id',
+  path: '/avisos/edit/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -405,13 +400,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAvisosCreateLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
-    '/_authenticated/avisos/edit': {
-      id: '/_authenticated/avisos/edit'
-      path: '/avisos/edit'
-      fullPath: '/avisos/edit'
-      preLoaderRoute: typeof AuthenticatedAvisosEditLazyImport
-      parentRoute: typeof AuthenticatedRouteImport
-    }
     '/_authenticated/settings/account': {
       id: '/_authenticated/settings/account'
       path: '/account'
@@ -482,6 +470,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersIndexLazyImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/avisos/edit/$id': {
+      id: '/_authenticated/avisos/edit/$id'
+      path: '/avisos/edit/$id'
+      fullPath: '/avisos/edit/$id'
+      preLoaderRoute: typeof AuthenticatedAvisosEditIdImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
   }
 }
 
@@ -517,12 +512,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteLazyRoute: typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedAvisosCreateLazyRoute: typeof AuthenticatedAvisosCreateLazyRoute
-  AuthenticatedAvisosEditLazyRoute: typeof AuthenticatedAvisosEditLazyRoute
   AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
   AuthenticatedChatsIndexLazyRoute: typeof AuthenticatedChatsIndexLazyRoute
   AuthenticatedHelpCenterIndexLazyRoute: typeof AuthenticatedHelpCenterIndexLazyRoute
   AuthenticatedTasksIndexLazyRoute: typeof AuthenticatedTasksIndexLazyRoute
   AuthenticatedUsersIndexLazyRoute: typeof AuthenticatedUsersIndexLazyRoute
+  AuthenticatedAvisosEditIdRoute: typeof AuthenticatedAvisosEditIdRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -530,12 +525,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedSettingsRouteLazyRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedAvisosCreateLazyRoute: AuthenticatedAvisosCreateLazyRoute,
-  AuthenticatedAvisosEditLazyRoute: AuthenticatedAvisosEditLazyRoute,
   AuthenticatedAppsIndexLazyRoute: AuthenticatedAppsIndexLazyRoute,
   AuthenticatedChatsIndexLazyRoute: AuthenticatedChatsIndexLazyRoute,
   AuthenticatedHelpCenterIndexLazyRoute: AuthenticatedHelpCenterIndexLazyRoute,
   AuthenticatedTasksIndexLazyRoute: AuthenticatedTasksIndexLazyRoute,
   AuthenticatedUsersIndexLazyRoute: AuthenticatedUsersIndexLazyRoute,
+  AuthenticatedAvisosEditIdRoute: AuthenticatedAvisosEditIdRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -556,7 +551,6 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
   '/avisos/create': typeof AuthenticatedAvisosCreateLazyRoute
-  '/avisos/edit': typeof AuthenticatedAvisosEditLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
@@ -567,6 +561,7 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof AuthenticatedSettingsIndexLazyRoute
   '/tasks': typeof AuthenticatedTasksIndexLazyRoute
   '/users': typeof AuthenticatedUsersIndexLazyRoute
+  '/avisos/edit/$id': typeof AuthenticatedAvisosEditIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -582,7 +577,6 @@ export interface FileRoutesByTo {
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
   '/avisos/create': typeof AuthenticatedAvisosCreateLazyRoute
-  '/avisos/edit': typeof AuthenticatedAvisosEditLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
@@ -593,6 +587,7 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthenticatedSettingsIndexLazyRoute
   '/tasks': typeof AuthenticatedTasksIndexLazyRoute
   '/users': typeof AuthenticatedUsersIndexLazyRoute
+  '/avisos/edit/$id': typeof AuthenticatedAvisosEditIdRoute
 }
 
 export interface FileRoutesById {
@@ -612,7 +607,6 @@ export interface FileRoutesById {
   '/(errors)/503': typeof errors503LazyRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/avisos/create': typeof AuthenticatedAvisosCreateLazyRoute
-  '/_authenticated/avisos/edit': typeof AuthenticatedAvisosEditLazyRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
@@ -623,6 +617,7 @@ export interface FileRoutesById {
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexLazyRoute
   '/_authenticated/tasks/': typeof AuthenticatedTasksIndexLazyRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexLazyRoute
+  '/_authenticated/avisos/edit/$id': typeof AuthenticatedAvisosEditIdRoute
 }
 
 export interface FileRouteTypes {
@@ -642,7 +637,6 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/avisos/create'
-    | '/avisos/edit'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
@@ -653,6 +647,7 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/tasks'
     | '/users'
+    | '/avisos/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/500'
@@ -667,7 +662,6 @@ export interface FileRouteTypes {
     | '/503'
     | '/'
     | '/avisos/create'
-    | '/avisos/edit'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
@@ -678,6 +672,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/tasks'
     | '/users'
+    | '/avisos/edit/$id'
   id:
     | '__root__'
     | '/_authenticated'
@@ -695,7 +690,6 @@ export interface FileRouteTypes {
     | '/(errors)/503'
     | '/_authenticated/'
     | '/_authenticated/avisos/create'
-    | '/_authenticated/avisos/edit'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
@@ -706,6 +700,7 @@ export interface FileRouteTypes {
     | '/_authenticated/settings/'
     | '/_authenticated/tasks/'
     | '/_authenticated/users/'
+    | '/_authenticated/avisos/edit/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -769,12 +764,12 @@ export const routeTree = rootRoute
         "/_authenticated/settings",
         "/_authenticated/",
         "/_authenticated/avisos/create",
-        "/_authenticated/avisos/edit",
         "/_authenticated/apps/",
         "/_authenticated/chats/",
         "/_authenticated/help-center/",
         "/_authenticated/tasks/",
-        "/_authenticated/users/"
+        "/_authenticated/users/",
+        "/_authenticated/avisos/edit/$id"
       ]
     },
     "/(auth)/500": {
@@ -829,10 +824,6 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/avisos/create.lazy.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/avisos/edit": {
-      "filePath": "_authenticated/avisos/edit.lazy.tsx",
-      "parent": "/_authenticated"
-    },
     "/_authenticated/settings/account": {
       "filePath": "_authenticated/settings/account.lazy.tsx",
       "parent": "/_authenticated/settings"
@@ -871,6 +862,10 @@ export const routeTree = rootRoute
     },
     "/_authenticated/users/": {
       "filePath": "_authenticated/users/index.lazy.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/avisos/edit/$id": {
+      "filePath": "_authenticated/avisos/edit/$id.tsx",
       "parent": "/_authenticated"
     }
   }

@@ -20,6 +20,8 @@ import { CalendarIcon, DotsVerticalIcon } from "@radix-ui/react-icons"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { useNavigate } from '@tanstack/react-router'
+import useNotices from "../hooks/useAviso"
+import { toast } from "@/hooks/use-toast"
 
 
 interface AvisoCardProps {
@@ -29,12 +31,46 @@ interface AvisoCardProps {
 
 export default function AvisoCard({ aviso }: AvisoCardProps) {
     const { name, description, creationDate, endDate, startDate, fijado } = aviso
-
+    const { deleteNotice, fixNotice } = useNotices()
     const navigate = useNavigate()
 
     const handleGoToEdit = (aviso: Aviso) => {
         // Redirige a la ruta deseada
-        navigate({ to: '/avisos/edit', params: aviso })
+        if (aviso.id)
+            navigate({ to: '/avisos/edit/$id', params: { id: aviso.id.toString() } })
+    }
+
+    const handleFixNotice = (aviso: Aviso) => {
+        fixNotice(aviso).then(
+            () => {
+                toast({
+                    title: 'Aviso fijado',
+                    description: 'El aviso se mostrará en la pantalla principal de la universidad.'
+                })
+            }
+        ).catch((err) => {
+            toast({
+                title: 'Ocurrió un error al eliminar el aviso',
+                description: err.message,
+                variant: 'destructive'
+            })
+        })
+    }
+
+    const handleDeleteNotice = (id: number) => {
+        deleteNotice(id)
+            .catch((err) => {
+                toast({
+                    title: 'Ocurrió un error al eliminar el aviso',
+                    description: err.message,
+                    variant: 'destructive'
+                })
+            })
+            .then(() => {
+                toast({
+                    title: 'El aviso eliminado'
+                })
+            })
     }
 
     return (
@@ -52,10 +88,9 @@ export default function AvisoCard({ aviso }: AvisoCardProps) {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent className="mr-2">
                             <DropdownMenuItem onSelect={() => handleGoToEdit(aviso)}>Editar</DropdownMenuItem>
-                            <DropdownMenuItem>Fijar</DropdownMenuItem>
+                            <DropdownMenuItem onSelect={() => handleFixNotice(aviso)}>Fijar</DropdownMenuItem>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem className="text-destructive">Eliminar</DropdownMenuItem>
-
+                            <DropdownMenuItem className="text-destructive" onSelect={() => aviso.id && handleDeleteNotice(aviso.id)}>Eliminar</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

@@ -11,6 +11,7 @@ export const noticesService = {
         return response.data;
     },
 
+
     async getFixedNotice(): Promise<Aviso> {
         const response = await axios.get<Aviso>(API_BASE_URL);
         return response.data;
@@ -18,13 +19,15 @@ export const noticesService = {
 
     async getAll(): Promise<Aviso[]> {
         const response = await axios.get<Aviso[]>(API_BASE_URL + '/all')
-        console.log(response.data);
-        
         return response.data
     },
 
+    async getById(id: number): Promise<Aviso> {
+        const response = await axios.get<Aviso>(`${API_BASE_URL}/${id}`)
+        return response.data
+    },
 
-    async updateNotice(noticeData: Aviso): Promise<Aviso> {
+    async updateNotice(noticeData: Partial<Aviso>): Promise<Aviso> {
         if (!noticeData.id) {
             throw new Error('The id must not be null');
         }
@@ -38,3 +41,5 @@ export const noticesService = {
 };
 
 export default noticesService;
+
+

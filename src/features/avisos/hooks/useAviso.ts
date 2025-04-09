@@ -6,17 +6,22 @@ import { Aviso } from '../types';
 interface UseNoticesReturn {
     avisos: Aviso[];
     fixedAviso: Aviso | null;
+    selectedAviso: Aviso | null;
     loading: boolean;
     error: Error | null;
     createNotice: (noticeData: Aviso) => Promise<void>;
+    deleteNotice: (id: number) => Promise<void>;
+    fixNotice: (aviso: Aviso) => Promise<void>;
     fetchFixedNotice: () => Promise<void>;
     fetchAllNotice: () => Promise<void>;
+    fetchById: (id: number) => Promise<void>;
     setError: (error: Error | null) => void;
 }
 
 const useNotices = (): UseNoticesReturn => {
     const [avisos, setAvisos] = useState<Aviso[]>([]);
     const [fixedAviso, setFixedAviso] = useState<Aviso | null>(null);
+    const [selectedAviso, setSelectedAviso] = useState<Aviso | null>(null);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<Error | null>(null);
 
@@ -26,6 +31,22 @@ const useNotices = (): UseNoticesReturn => {
         try {
             const notice = await noticesService.getFixedNotice();
             setFixedAviso(notice);
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('Error desconocido'));
+        } finally {
+            setLoading(false);
+        }
+    }, []);
+
+    const fetchById = useCallback(async (id: number): Promise<void> => {
+        setLoading(true);
+        setError(null);
+        try {
+            const aviso = await noticesService.getById(id);
+            aviso.creationDate = new Date(aviso.creationDate).toISOString()
+            aviso.startDate = new Date(aviso.startDate).toISOString()
+            aviso.endDate = new Date(aviso.endDate).toISOString()
+            setSelectedAviso(aviso);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Error desconocido'));
         } finally {
@@ -47,11 +68,12 @@ const useNotices = (): UseNoticesReturn => {
         }
     }, []);
 
+
+
     const createNotice = async (noticeData: Aviso): Promise<void> => {
         setLoading(true);
         try {
             await noticesService.createOrUpdateNotice(noticeData);
-            await fetchFixedNotice(); // Refrescar después de crear
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Error desconocido'));
         } finally {
@@ -59,18 +81,40 @@ const useNotices = (): UseNoticesReturn => {
         }
     };
 
+    const fixNotice = async (aviso: Aviso): Promise<void> => {
+        try {
+            await noticesService.updateNotice({ ...aviso, fijado: true });
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('Error desconocido'));
+        }
+    }
+
+    const deleteNotice = async (id: number) => {
+        try {
+            await noticesService.deleteNotice(id);
+        } catch (err) {
+            setError(err instanceof Error ? err : new Error('Error desconocido'));
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         fetchAllNotice()
-    }, [,fetchAllNotice]);
+    }, []);
 
     return {
         avisos,
         fixedAviso,
+        selectedAviso,
         loading,
         error,
         createNotice,
+        deleteNotice,
+        fixNotice,
         fetchFixedNotice,
         fetchAllNotice,
+        fetchById,
         setError
     };
 };

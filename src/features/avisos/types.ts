@@ -2,9 +2,9 @@ export interface Aviso {
     id?: number
     name: string
     description: string
-    creationDate: Date
-    startDate: Date
-    endDate: Date
+    creationDate: string
+    startDate: string
+    endDate: string
     status: boolean
     fijado: boolean
 }

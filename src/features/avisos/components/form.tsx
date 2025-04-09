@@ -3,7 +3,6 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { avisoFormSchema, defaultValues as values } from "../form-schema"
-
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -31,10 +30,11 @@ interface AvisoFormProps {
     className?: string
 }
 
-export default function AvisoForm({
-    defaultValues = values,
-    onSubmit }: AvisoFormProps) {
-
+export default function AvisoForm(
+    {
+        defaultValues = values,
+        onSubmit
+    }: AvisoFormProps) {
 
     // 1. Define your form.
     const form = useForm<z.infer<typeof avisoFormSchema>>({
@@ -58,7 +58,7 @@ export default function AvisoForm({
                             </FormControl>
                             <FormDescription>
 
-                            </FormDescription>  
+                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -114,8 +114,11 @@ export default function AvisoForm({
                                     <PopoverContent className="w-auto p-0" align="start">
                                         <Calendar
                                             mode="single"
-                                            selected={field.value}
-                                            onSelect={field.onChange}
+                                            selected={new Date(field.value)}
+                                            onSelect={(day) => {
+                                                if (day)
+                                                    form.setValue('startDate', day.toISOString())
+                                            }}
                                             disabled={(date) =>
                                                 date < new Date()
                                             }
@@ -160,8 +163,12 @@ export default function AvisoForm({
                                     <PopoverContent className="w-auto p-0" align="start">
                                         <Calendar
                                             mode="single"
-                                            selected={field.value}
-                                            onSelect={field.onChange}
+                                            selected={new Date(field.value)}
+                                            onSelect={(day) => {
+                                                if (day)
+                                                    form.setValue('endDate', day.toISOString())
+                                            }}
+
                                             disabled={(date) =>
                                                 date < new Date()
                                             }
