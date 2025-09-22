@@ -79,6 +79,7 @@ export default class PostService extends BaseService {
       const formData = new FormData()
       formData.append('file', file)
 
+
       return await this.postFormData<ImageUploadResponse>(
         `${this.endpoint}/${postId}/images`,
         formData,

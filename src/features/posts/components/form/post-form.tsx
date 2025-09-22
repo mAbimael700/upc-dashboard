@@ -93,8 +93,6 @@ const PostForm = ({
           )}
         />
         <Button type='submit'>Submit</Button>
-
-        {JSON.stringify(form.formState.errors, null, 2) }
       </form>
     </Form>
   )

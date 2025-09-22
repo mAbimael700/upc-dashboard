@@ -10,7 +10,7 @@ export default function AuthLayout({ children }: Props) {
       <div className='mx-auto flex w-full flex-col justify-center space-y-2 sm:w-[480px] lg:p-8'>
         <div className='mb-4 flex items-center justify-center space-x-4'>
 
-          <UpcdLogo className='w-16 h-16'/>
+          <UpcdLogo className='w-16 h-16 fill-primary'/>
           <h1 className='text-xl font-medium'>UPDC Admin</h1>
         </div>
         {children}

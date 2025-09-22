@@ -70,9 +70,11 @@ export const useAuthStore = create<AuthState>()(
           try {
             get().auth.setLoading(true)
             const response = await AuthService.login({ email, password });
+            console.log(response)
             const token = response.accessToken;
 
             if (token) {
+
               get().auth.setAccessToken(token)
               return await get().auth.loadUserProfile()
             }

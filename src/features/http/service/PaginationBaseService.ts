@@ -120,6 +120,7 @@ export abstract class BaseService {
       const response = await this.apiHttpClient.post<T>(url, formData, {
         headers: {
           ...headers,
+          "Content-type": 'multipart/form-data'
           // Explícitamente no establecer Content-Type para FormData
         }
       })

@@ -17,7 +17,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
                                                          className = '',
                                                          onImageUpload,
                                                        }) => {
-  const [content, setContent] = useState<string>('')
+  const [_, setContent] = useState<string>('')
   const [isFocused, setIsFocused] = useState<boolean>(false)
 
   const { editor } = useRichTextEditor(
@@ -96,14 +96,6 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
       </div>
 
       {/* Información de debug (puedes removerla en producción) */}
-      <div className='border-t bg-gray-50 p-2 text-sm text-gray-600'>
-        <details>
-          <summary className='cursor-pointer'>Ver contenido HTML</summary>
-          <pre className='mt-2 whitespace-pre-wrap rounded border bg-white p-2 text-xs'>
-            {content || 'Contenido vacío'}
-          </pre>
-        </details>
-      </div>
     </div>
   )
 }
