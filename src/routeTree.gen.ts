@@ -18,6 +18,8 @@ import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 import { Route as authOtpImport } from './routes/(auth)/otp'
 import { Route as auth500Import } from './routes/(auth)/500'
+import { Route as AuthenticatedTestIndexImport } from './routes/_authenticated/test/index'
+import { Route as AuthenticatedPostsCreateImport } from './routes/_authenticated/posts/create'
 import { Route as AuthenticatedAvisosEditIdImport } from './routes/_authenticated/avisos/edit/$id'
 
 // Create Virtual Routes
@@ -232,6 +234,12 @@ const AuthenticatedAppsIndexLazyRoute = AuthenticatedAppsIndexLazyImport.update(
   import('./routes/_authenticated/apps/index.lazy').then((d) => d.Route),
 )
 
+const AuthenticatedTestIndexRoute = AuthenticatedTestIndexImport.update({
+  id: '/test/',
+  path: '/test/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+
 const AuthenticatedSettingsNotificationsLazyRoute =
   AuthenticatedSettingsNotificationsLazyImport.update({
     id: '/notifications',
@@ -284,6 +292,12 @@ const AuthenticatedAvisosCreateLazyRoute =
   } as any).lazy(() =>
     import('./routes/_authenticated/avisos/create.lazy').then((d) => d.Route),
   )
+
+const AuthenticatedPostsCreateRoute = AuthenticatedPostsCreateImport.update({
+  id: '/posts/create',
+  path: '/posts/create',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 const AuthenticatedAvisosEditIdRoute = AuthenticatedAvisosEditIdImport.update({
   id: '/avisos/edit/$id',
@@ -393,6 +407,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/_authenticated/posts/create': {
+      id: '/_authenticated/posts/create'
+      path: '/posts/create'
+      fullPath: '/posts/create'
+      preLoaderRoute: typeof AuthenticatedPostsCreateImport
+      parentRoute: typeof AuthenticatedRouteImport
+    }
     '/_authenticated/avisos/create': {
       id: '/_authenticated/avisos/create'
       path: '/avisos/create'
@@ -427,6 +448,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/notifications'
       preLoaderRoute: typeof AuthenticatedSettingsNotificationsLazyImport
       parentRoute: typeof AuthenticatedSettingsRouteLazyImport
+    }
+    '/_authenticated/test/': {
+      id: '/_authenticated/test/'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof AuthenticatedTestIndexImport
+      parentRoute: typeof AuthenticatedRouteImport
     }
     '/_authenticated/apps/': {
       id: '/_authenticated/apps/'
@@ -511,7 +539,9 @@ const AuthenticatedSettingsRouteLazyRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteLazyRoute: typeof AuthenticatedSettingsRouteLazyRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedPostsCreateRoute: typeof AuthenticatedPostsCreateRoute
   AuthenticatedAvisosCreateLazyRoute: typeof AuthenticatedAvisosCreateLazyRoute
+  AuthenticatedTestIndexRoute: typeof AuthenticatedTestIndexRoute
   AuthenticatedAppsIndexLazyRoute: typeof AuthenticatedAppsIndexLazyRoute
   AuthenticatedChatsIndexLazyRoute: typeof AuthenticatedChatsIndexLazyRoute
   AuthenticatedHelpCenterIndexLazyRoute: typeof AuthenticatedHelpCenterIndexLazyRoute
@@ -524,7 +554,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteLazyRoute:
     AuthenticatedSettingsRouteLazyRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedPostsCreateRoute: AuthenticatedPostsCreateRoute,
   AuthenticatedAvisosCreateLazyRoute: AuthenticatedAvisosCreateLazyRoute,
+  AuthenticatedTestIndexRoute: AuthenticatedTestIndexRoute,
   AuthenticatedAppsIndexLazyRoute: AuthenticatedAppsIndexLazyRoute,
   AuthenticatedChatsIndexLazyRoute: AuthenticatedChatsIndexLazyRoute,
   AuthenticatedHelpCenterIndexLazyRoute: AuthenticatedHelpCenterIndexLazyRoute,
@@ -550,11 +582,13 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
+  '/posts/create': typeof AuthenticatedPostsCreateRoute
   '/avisos/create': typeof AuthenticatedAvisosCreateLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
+  '/test': typeof AuthenticatedTestIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
@@ -576,11 +610,13 @@ export interface FileRoutesByTo {
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
+  '/posts/create': typeof AuthenticatedPostsCreateRoute
   '/avisos/create': typeof AuthenticatedAvisosCreateLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
+  '/test': typeof AuthenticatedTestIndexRoute
   '/apps': typeof AuthenticatedAppsIndexLazyRoute
   '/chats': typeof AuthenticatedChatsIndexLazyRoute
   '/help-center': typeof AuthenticatedHelpCenterIndexLazyRoute
@@ -606,11 +642,13 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500LazyRoute
   '/(errors)/503': typeof errors503LazyRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/posts/create': typeof AuthenticatedPostsCreateRoute
   '/_authenticated/avisos/create': typeof AuthenticatedAvisosCreateLazyRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsLazyRoute
+  '/_authenticated/test/': typeof AuthenticatedTestIndexRoute
   '/_authenticated/apps/': typeof AuthenticatedAppsIndexLazyRoute
   '/_authenticated/chats/': typeof AuthenticatedChatsIndexLazyRoute
   '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexLazyRoute
@@ -636,11 +674,13 @@ export interface FileRouteTypes {
     | '/404'
     | '/503'
     | '/'
+    | '/posts/create'
     | '/avisos/create'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/test'
     | '/apps'
     | '/chats'
     | '/help-center'
@@ -661,11 +701,13 @@ export interface FileRouteTypes {
     | '/404'
     | '/503'
     | '/'
+    | '/posts/create'
     | '/avisos/create'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
+    | '/test'
     | '/apps'
     | '/chats'
     | '/help-center'
@@ -689,11 +731,13 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
+    | '/_authenticated/posts/create'
     | '/_authenticated/avisos/create'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
+    | '/_authenticated/test/'
     | '/_authenticated/apps/'
     | '/_authenticated/chats/'
     | '/_authenticated/help-center/'
@@ -763,7 +807,9 @@ export const routeTree = rootRoute
       "children": [
         "/_authenticated/settings",
         "/_authenticated/",
+        "/_authenticated/posts/create",
         "/_authenticated/avisos/create",
+        "/_authenticated/test/",
         "/_authenticated/apps/",
         "/_authenticated/chats/",
         "/_authenticated/help-center/",
@@ -820,6 +866,10 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/index.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/posts/create": {
+      "filePath": "_authenticated/posts/create.tsx",
+      "parent": "/_authenticated"
+    },
     "/_authenticated/avisos/create": {
       "filePath": "_authenticated/avisos/create.lazy.tsx",
       "parent": "/_authenticated"
@@ -839,6 +889,10 @@ export const routeTree = rootRoute
     "/_authenticated/settings/notifications": {
       "filePath": "_authenticated/settings/notifications.lazy.tsx",
       "parent": "/_authenticated/settings"
+    },
+    "/_authenticated/test/": {
+      "filePath": "_authenticated/test/index.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/apps/": {
       "filePath": "_authenticated/apps/index.lazy.tsx",

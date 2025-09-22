@@ -4,7 +4,7 @@ import { Aviso } from '../types';
 const API_DOMAIN = 'https://upc-api-1-xmr7.onrender.com';
 const API_BASE_URL = `${API_DOMAIN}/upc/v1/notices`;
 
-export const noticesService = {
+export const AvisosService = {
 
     async createOrUpdateNotice(noticeData: Aviso) {
         const response = await axios.post<Aviso>(API_BASE_URL, noticeData);
@@ -40,6 +40,6 @@ export const noticesService = {
     }
 };
 
-export default noticesService;
+export default AvisosService;
 
 

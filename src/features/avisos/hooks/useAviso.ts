@@ -1,6 +1,6 @@
 // src/features/notices/hooks/useNotices.ts
 import { useState, useEffect, useCallback } from 'react';
-import noticesService from '../api/service';
+import AvisosService from '@/features/avisos/services/AvisosService.ts';
 import { Aviso } from '../types';
 
 interface UseNoticesReturn {
@@ -29,7 +29,7 @@ const useNotices = (): UseNoticesReturn => {
         setLoading(true);
         setError(null);
         try {
-            const notice = await noticesService.getFixedNotice();
+            const notice = await AvisosService.getFixedNotice();
             setFixedAviso(notice);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Error desconocido'));
@@ -42,7 +42,7 @@ const useNotices = (): UseNoticesReturn => {
         setLoading(true);
         setError(null);
         try {
-            const aviso = await noticesService.getById(id);
+            const aviso = await AvisosService.getById(id);
             aviso.creationDate = new Date(aviso.creationDate).toISOString()
             aviso.startDate = new Date(aviso.startDate).toISOString()
             aviso.endDate = new Date(aviso.endDate).toISOString()
@@ -59,7 +59,7 @@ const useNotices = (): UseNoticesReturn => {
         setLoading(true);
         setError(null);
         try {
-            const notices = await noticesService.getAll();
+            const notices = await AvisosService.getAll();
             setAvisos(notices);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Error desconocido'));
@@ -73,7 +73,7 @@ const useNotices = (): UseNoticesReturn => {
     const createNotice = async (noticeData: Aviso): Promise<void> => {
         setLoading(true);
         try {
-            await noticesService.createOrUpdateNotice(noticeData);
+            await AvisosService.createOrUpdateNotice(noticeData);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Error desconocido'));
         } finally {
@@ -83,7 +83,7 @@ const useNotices = (): UseNoticesReturn => {
 
     const fixNotice = async (aviso: Aviso): Promise<void> => {
         try {
-            await noticesService.updateNotice({ ...aviso, fijado: true });
+            await AvisosService.updateNotice({ ...aviso, fijado: true });
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Error desconocido'));
         }
@@ -91,7 +91,7 @@ const useNotices = (): UseNoticesReturn => {
 
     const deleteNotice = async (id: number) => {
         try {
-            await noticesService.deleteNotice(id);
+            await AvisosService.deleteNotice(id);
         } catch (err) {
             setError(err instanceof Error ? err : new Error('Error desconocido'));
         } finally {

@@ -11,7 +11,9 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  Table as ITable,
   useReactTable,
+  TableOptions,
 } from '@tanstack/react-table'
 import {
   Table,
@@ -22,17 +24,22 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { DataTablePagination } from './data-table-pagination'
-import { DataTableToolbar } from './data-table-toolbar'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  header?: (table: ITable<TData>) => React.ReactNode; // Función que recibe `table`
+  footer?: (table: ITable<TData>) => React.ReactNode; // Función que recibe `table`
+  options?: Partial<TableOptions<TData>>/* <TData> */; // Usa la nueva interfaz
 }
 
 export function DataTable<TData, TValue>({
-  columns,
-  data,
-}: DataTableProps<TData, TValue>) {
+                                           columns,
+                                           data,
+                                           header,
+                                           footer,
+                                           options = {}
+                                         }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
@@ -61,11 +68,14 @@ export function DataTable<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    ...options
   })
 
   return (
     <div className='space-y-4'>
-      <DataTableToolbar table={table} />
+
+      {header && header(table)}
+
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
@@ -77,9 +87,9 @@ export function DataTable<TData, TValue>({
                       {header.isPlaceholder
                         ? null
                         : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
                     </TableHead>
                   )
                 })}
@@ -116,7 +126,10 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+
+      {footer ? <div className="footer">{footer(table)}</div> :
+        <DataTablePagination table={table} />}
+
     </div>
   )
 }

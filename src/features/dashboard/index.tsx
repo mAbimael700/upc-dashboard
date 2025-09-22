@@ -29,7 +29,7 @@ export default function Dashboard() {
             <h1 className='text-2xl font-bold tracking-tight'>Avisos</h1>
             <p className='text-sm text-muted-foreground'>Este el panel de administración de los avisos que se muestran en la pantalla principal</p>
           </div>
-          <Link className={buttonVariants()} to='/avisos/create'>Publicar</Link>
+          <Link className={buttonVariants()} to='/test'>Publicar</Link>
         </div>
 
         <Separator />
