@@ -50,7 +50,7 @@ export default function SignIn2() {
               to log into your account
             </p>
           </div>
-          <UserAuthForm />
+          <UserAuthForm handleSubmit={()=>{}} />
           <p className='px-8 text-center text-sm text-muted-foreground'>
             By clicking login, you agree to our{' '}
             <a

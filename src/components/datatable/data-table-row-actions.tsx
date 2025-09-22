@@ -6,8 +6,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
+/*  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,*/
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuSub,
@@ -15,20 +15,21 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import { useTasks } from '../context/tasks-context'
+/*import { useTasks } from '../context/tasks-context'
 import { labels } from '../data/data'
-import { taskSchema } from '../data/schema'
+import { taskSchema } from '../data/schema'*/
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
 }
 
+// eslint-disable-next-line no-empty-pattern
 export function DataTableRowActions<TData>({
-  row,
+/*  row,*/
 }: DataTableRowActionsProps<TData>) {
-  const task = taskSchema.parse(row.original)
+/*  const task = taskSchema.parse(row.original)
 
-  const { setOpen, setCurrentRow } = useTasks()
+  const { setOpen, setCurrentRow } = useTasks()*/
 
   return (
     <DropdownMenu modal={false}>
@@ -43,10 +44,10 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
         <DropdownMenuItem
-          onClick={() => {
+     /*     onClick={() => {
             setCurrentRow(task)
             setOpen('update')
-          }}
+          }}*/
         >
           Edit
         </DropdownMenuItem>
@@ -56,21 +57,21 @@ export function DataTableRowActions<TData>({
         <DropdownMenuSub>
           <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
           <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.label}>
+   {/*         <DropdownMenuRadioGroup value={task.label}>
               {labels.map((label) => (
                 <DropdownMenuRadioItem key={label.value} value={label.value}>
                   {label.label}
                 </DropdownMenuRadioItem>
               ))}
-            </DropdownMenuRadioGroup>
+            </DropdownMenuRadioGroup>*/}
           </DropdownMenuSubContent>
         </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem
-          onClick={() => {
+/*          onClick={() => {
             setCurrentRow(task)
             setOpen('delete')
-          }}
+          }}*/
         >
           Delete
           <DropdownMenuShortcut>
