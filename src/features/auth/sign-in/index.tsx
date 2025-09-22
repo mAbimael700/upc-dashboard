@@ -1,8 +1,16 @@
+import { useAuth } from '@/stores/authStore.ts'
 import { Card } from '@/components/ui/card'
+import { SignInSchema } from '@/features/auth/sign-in/components/form-schema.ts'
 import AuthLayout from '../auth-layout'
 import { UserAuthForm } from './components/user-auth-form'
 
 export default function SignIn() {
+  const { login } = useAuth()
+
+  async function handleSubmit(data: SignInSchema) {
+    await login(data.email, data.password);
+  }
+
   return (
     <AuthLayout>
       <Card className='p-6'>
@@ -13,7 +21,7 @@ export default function SignIn() {
             to log into your account
           </p>
         </div>
-        <UserAuthForm />
+        <UserAuthForm handleSubmit={handleSubmit} />
         <p className='mt-4 px-8 text-center text-sm text-muted-foreground'>
           By clicking login, you agree to our{' '}
           <a
